@@ -787,9 +787,9 @@ $settings['entity_update_batch_size'] = 50;
 # }
 $config_directories['sync'] = '../config/sync';
 $databases['default']['default'] = array (
-    'database' => getenv('MYSQL_DB_NAME'),
+    'database' => getenv('MYSQL_DATABASE'),
     'username' => getenv('MYSQL_USER'),
-    'password' => getenv('MYSQL_ROOT_PASS'),
+    'password' => getenv('MYSQL_PASS'),
     'prefix' => '',
     'host' => getenv('MYSQL_HOST_NAME'),
     'port' => getenv('MYSQL_PORT'),
