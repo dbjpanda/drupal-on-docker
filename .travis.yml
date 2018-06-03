@@ -1,0 +1,11 @@
+language: bash
+
+services:
+  - docker
+  
+before_script:
+  - ./travis/docker-build.sh
+  - docker-compose up -d
+  
+script:
+  - ./travis/drupal-build.sh
