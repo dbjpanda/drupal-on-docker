@@ -1,6 +1,14 @@
 [![Build Status](https://travis-ci.com/dbjpanda/drupal-on-docker.svg?token=55CADUHzgmryMHLpbyAs&branch=master)](https://travis-ci.com/dbjpanda/drupal-on-docker)
 
-Installation on development server
+Optional steps but recommended
+----------------------
+Install Traefik to access your Drupal site using their "domain name" instead of "IP:port" . This is an one time setup and use with all projects. This is usefull for both Drupal and Non-Drupal projects. 
+```$xslt
+docker network create -d bridge traefik-network
+docker run -d --network=traefik-network -p 80:80 -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock --name=traefik traefik:latest --api --docker
+```
+
+Installation of Drupal on development server
 ----------------------
 Step 1 
 ``````
@@ -17,11 +25,11 @@ docker-compose up -d
 
 Step 4
 ````````
-docker exec -it php composer install
+docker exec -it PROJECT_NAME composer install
 ````````
 
 
-Installation on production server
+Installation of Drupal on production server
 ---------------------------
 Here you need to override the default environment variables for production server. You can achieve it by below command while deploying.
 
