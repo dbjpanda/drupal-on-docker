@@ -1,7 +1,9 @@
 [![Build Status](https://travis-ci.com/dbjpanda/drupal-on-docker.svg?token=55CADUHzgmryMHLpbyAs&branch=master)](https://travis-ci.com/dbjpanda/drupal-on-docker)
 
-Optional steps but recommended
+Optional but recommended steps 
 ----------------------
+# As this project is configured to work with Traefik by default. If you don't want to install Traefik, then you need to manually provide a port number to nginx service and acess it uisng localhost:port.
+
 Install Traefik to access your Drupal site using their "domain name" instead of "IP:port" . This is an one time setup and use with all projects. This is usefull for both Drupal and Non-Drupal projects. 
 ```$xslt
 docker network create -d bridge traefik-network
