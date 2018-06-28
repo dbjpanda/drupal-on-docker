@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3.3"
 
 services:
 
@@ -17,8 +17,6 @@ services:
     volumes:
       - ./code:/var/www/${PROJECT_NAME}:cached
     working_dir: /var/www/${PROJECT_NAME}
-#    ports:
-#      - 81:80
     environment:
       PROJECT_NAME: ${PROJECT_NAME}
       DOMAIN_NAME: ${DOMAIN_NAME}
@@ -33,7 +31,6 @@ services:
     networks:
       - drupal
 
-
   mariadb:
     container_name: ${PROJECT_NAME}.mariadb
     image: dbjpanda/drupal-on-docker-mariadb
@@ -43,16 +40,7 @@ services:
     networks:
       - drupal
 
-#  traefik:
-#    container_name: ${SITE_NAME}.traefik
-#    image: traefik
-#    command: --api --docker
-#    ports:
-#      - "80:80"
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock
-
 networks:
   drupal:
-    external: ${EXTERNAL_NETWORK_ENABLE}
-    name: ${EXTERNAL_NETWORK_NAME}
+    external:
+     name: ${NETWORK_NAME}
