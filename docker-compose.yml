@@ -1,44 +1,58 @@
-version: "3"
+version: "3.5"
 
 services:
 
   php:
-    container_name: ${SITE_NAME}.php
+    container_name: ${PROJECT_NAME}
     image: dbjpanda/drupal-on-docker-php
     volumes:
-      - ./code:/var/www/${SITE_NAME}:cached
-    working_dir: /var/www/${SITE_NAME}
-
+      - ./code:/var/www/${PROJECT_NAME}:cached
+    working_dir: /var/www/${PROJECT_NAME}
+    networks:
+      - drupal
 
   nginx:
-    container_name: ${SITE_NAME}.nginx
+    container_name: ${PROJECT_NAME}.nginx
     image: dbjpanda/drupal-on-docker-nginx
     volumes:
-      - ./code:/var/www/${SITE_NAME}:cached
-    working_dir: /var/www/${SITE_NAME}
+      - ./code:/var/www/${PROJECT_NAME}:cached
+    working_dir: /var/www/${PROJECT_NAME}
+#    ports:
+#      - 81:80
     environment:
-      SITE_NAME: ${SITE_NAME}
+      PROJECT_NAME: ${PROJECT_NAME}
+      DOMAIN_NAME: ${DOMAIN_NAME}
       DRUPAL_VERSION: ${DRUPAL_VERSION}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASS: ${MYSQL_PASS}
-      MYSQL_HOST_NAME: ${MYSQL_HOST_NAME}
+      MYSQL_HOST_NAME: ${PROJECT_NAME}.mariadb
       MYSQL_PORT: ${MYSQL_PORT}
     labels:
-      - "traefik.frontend.rule=Host:${SITE_NAME}"
+      - "traefik.frontend.rule=Host:${DOMAIN_NAME}"
+    networks:
+      - drupal
+
 
   mariadb:
-    container_name: ${SITE_NAME}.mariadb
+    container_name: ${PROJECT_NAME}.mariadb
     image: dbjpanda/drupal-on-docker-mariadb
     environment:
        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
        MYSQL_DATABASE: ${MYSQL_DATABASE}
+    networks:
+      - drupal
 
-  traefik:
-    container_name: ${SITE_NAME}.traefik
-    image: traefik
-    command: --api --docker
-    ports:
-      - "80:80"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+#  traefik:
+#    container_name: ${SITE_NAME}.traefik
+#    image: traefik
+#    command: --api --docker
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  drupal:
+    external: ${EXTERNAL_NETWORK_ENABLE}
+    name: ${EXTERNAL_NETWORK_NAME}
