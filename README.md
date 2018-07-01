@@ -14,9 +14,9 @@ Step 1
 ``````
 git clone https://github.com/dbjpanda/drupal-on-docker.git
 ```````
-Step 2 (optional)
+Step 2 
 ````````
-Modify .env file as per your requirements
+Rename .env.example to .env and modify the file as per your requirements
 ``````````````
 Step 3
 ````````
