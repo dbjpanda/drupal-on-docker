@@ -6,7 +6,7 @@ services:
     container_name: ${PROJECT_NAME}
     image: dbjpanda/drupal-on-docker-php
     volumes:
-      - ./code:/var/www/${PROJECT_NAME}:cached
+      - ./code/drupal:/var/www/${PROJECT_NAME}:cached
     working_dir: /var/www/${PROJECT_NAME}
     networks:
       - drupal
@@ -15,7 +15,7 @@ services:
     container_name: ${PROJECT_NAME}.nginx
     image: dbjpanda/drupal-on-docker-nginx
     volumes:
-      - ./code:/var/www/${PROJECT_NAME}:cached
+      - ./code/drupal:/var/www/${PROJECT_NAME}:cached
     working_dir: /var/www/${PROJECT_NAME}
     environment:
       PROJECT_NAME: ${PROJECT_NAME}
@@ -34,6 +34,8 @@ services:
   mariadb:
     container_name: ${PROJECT_NAME}.mariadb
     image: dbjpanda/drupal-on-docker-mariadb
+#    volumes:
+#      - ./code/drupal/db-dump/drupal.sql:/docker-entrypoint-initdb.d/dump.sql
     environment:
        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
        MYSQL_DATABASE: ${MYSQL_DATABASE}
