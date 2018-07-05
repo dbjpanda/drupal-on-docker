@@ -30,7 +30,7 @@ docker exec -it PROJECT_NAME composer install
 
 Note: While installing it on production server
 ---------------------------
-As deployment is less frequent or often done by automated setup so here you can override the default environment variables using a below command instead of changing it in .env file.
+As deployment is less frequent or often done by automated setup so here you can override the default environment variables using below command instead of changing it in .env file.
 
 ````````
 SITE_NAME=example.com MYSQL_USER=someone MYSQL_PASS=yoursecrets docker-compose up -d
