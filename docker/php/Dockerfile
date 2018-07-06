@@ -40,13 +40,14 @@ RUN { \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-# Install composer( needs git ), drush-luncher(needs mysql-client)
+# Install composer( needs git ), drush-luncher(needs mysql-client), hirak/prestissimo(To make downloading of packages in parallel)
 RUN  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -- --filename=composer \
   && apk add --no-cache git \
   && wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download/0.6.0/drush.phar \
   && apk add --no-cache mysql-client \
   && chmod +x drush.phar \
   && mv drush.phar /usr/local/bin/drush
+  && composer global require hirak/prestissimo
 
 
 
