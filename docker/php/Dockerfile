@@ -1,7 +1,7 @@
-# from https://www.drupal.org/docs/8/system-requirements/drupal-8-php-requirements
+# From https://www.drupal.org/docs/8/system-requirements/drupal-8-php-requirements
 FROM php:7.2-fpm-alpine
 
-# install the PHP extensions we need
+# Install the PHP extensions we need
 # postgresql-dev is needed for https://bugs.alpinelinux.org/issues/3642
 RUN set -ex \
 	&& apk add --no-cache --virtual .build-deps \
@@ -29,8 +29,8 @@ RUN set -ex \
 	&& apk add --virtual .drupal-phpexts-rundeps $runDeps \
 	&& apk del .build-deps
 
-# set recommended PHP.ini settings
-# see https://secure.php.net/manual/en/opcache.installation.php
+# Set recommended PHP.ini settings
+# See https://secure.php.net/manual/en/opcache.installation.php
 RUN { \
 		echo 'opcache.memory_consumption=128'; \
 		echo 'opcache.interned_strings_buffer=8'; \
@@ -40,8 +40,10 @@ RUN { \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-  # Install Composer( Requires git ) 
-RUN  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -- --filename=composer \
+
+RUN  set ex \
+  # Install Composer( Requires git )
+  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -- --filename=composer \
   && apk add --no-cache git \
   # Install Prestissimo to force composer to download packages in parallel
   && composer global require hirak/prestissimo \
@@ -50,7 +52,7 @@ RUN  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin 
   && chmod +x drush.phar \
   && mv drush.phar /usr/local/bin/drush \
   # Install Mysql-client (Required by Drush)
-  && apk add --no-cache mysql-client \  
+  && apk add --no-cache mysql-client \
   # Install Drupal console luncher
   && curl https://drupalconsole.com/installer -L -o drupal.phar \
   && mv drupal.phar /usr/local/bin/drupal \
