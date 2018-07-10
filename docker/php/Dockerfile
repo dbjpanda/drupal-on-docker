@@ -40,17 +40,21 @@ RUN { \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-# Install composer( needs git ), drush-luncher(needs mysql-client), hirak/prestissimo(To make downloading of packages in parallel)
+  # Install Composer( Requires git ) 
 RUN  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -- --filename=composer \
   && apk add --no-cache git \
+  # Install Prestissimo to force composer to download packages in parallel
+  && composer global require hirak/prestissimo \
+  # Install Drush luncher
   && wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/download/0.6.0/drush.phar \
-  && apk add --no-cache mysql-client \
   && chmod +x drush.phar \
   && mv drush.phar /usr/local/bin/drush \
-  && composer global require hirak/prestissimo
-
-
-
+  # Install Mysql-client (Required by Drush)
+  && apk add --no-cache mysql-client \  
+  # Install Drupal console luncher
+  && curl https://drupalconsole.com/installer -L -o drupal.phar \
+  && mv drupal.phar /usr/local/bin/drupal \
+  && chmod +x /usr/local/bin/drupal
 
 COPY conf.d/* /usr/local/etc/php/conf.d/
 COPY php-fpm.d/* /usr/local/etc/php-fpm.d/
