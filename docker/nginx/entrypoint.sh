@@ -9,7 +9,7 @@ sed -i "s% public_html_root% /var/www/$PROJECT_NAME/web%" /etc/nginx/sites-enabl
 sed -i "s% php_container_name% "$PROJECT_NAME"%" /etc/nginx/sites-enabled/"$DOMAIN_NAME"
 
 mkdir -p /var/www/"$PROJECT_NAME"
-cp -a /drupal/"$DRUPAL_VERSION".x/. /var/www/"$PROJECT_NAME"/ 2>/dev/null || :
+cp -a -n /drupal/"$DRUPAL_VERSION".x/. /var/www/"$PROJECT_NAME"/ 2>/dev/null || :
 
 cat >/var/www/"$PROJECT_NAME"/.env << EOF
 MYSQL_DATABASE=$MYSQL_DATABASE
