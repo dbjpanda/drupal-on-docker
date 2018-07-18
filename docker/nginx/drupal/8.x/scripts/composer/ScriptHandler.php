@@ -6,7 +6,6 @@
  */
 
 namespace DrupalProject\composer;
-require 'vendor/autoload.php';
 
 use Composer\Script\Event;
 use Composer\Semver\Comparator;
@@ -41,6 +40,7 @@ class ScriptHandler {
         $fs->copy($drupalRoot . '/sites/default/default.settings.php', $drupalRoot . '/sites/default/settings.php');
         require_once $drupalRoot . '/core/includes/bootstrap.inc';
         require_once $drupalRoot . '/core/includes/install.inc';
+        require_once 'vendor/autoload.php';
         $settings['config_directories'] = [
             CONFIG_SYNC_DIRECTORY => (object) [
                 'value' => Path::makeRelative($drupalFinder->getComposerRoot() . '/config/sync', $drupalRoot),
