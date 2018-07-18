@@ -6,6 +6,7 @@
  */
 
 namespace DrupalProject\composer;
+require 'vendor/autoload.php';
 
 use Composer\Script\Event;
 use Composer\Semver\Comparator;
@@ -37,15 +38,39 @@ class ScriptHandler {
 
     // Prepare the settings file for installation
     if (!$fs->exists($drupalRoot . '/sites/default/settings.php') and $fs->exists($drupalRoot . '/sites/default/default.settings.php')) {
-      $fs->copy($drupalRoot . '/sites/default/default.settings.php', $drupalRoot . '/sites/default/settings.php');
-      require_once $drupalRoot . '/core/includes/bootstrap.inc';
-      require_once $drupalRoot . '/core/includes/install.inc';
-      $settings['config_directories'] = [
-        CONFIG_SYNC_DIRECTORY => (object) [
-          'value' => Path::makeRelative($drupalFinder->getComposerRoot() . '/config/sync', $drupalRoot),
-          'required' => TRUE,
-        ],
-      ];
+        $fs->copy($drupalRoot . '/sites/default/default.settings.php', $drupalRoot . '/sites/default/settings.php');
+        require_once $drupalRoot . '/core/includes/bootstrap.inc';
+        require_once $drupalRoot . '/core/includes/install.inc';
+        $settings['config_directories'] = [
+            CONFIG_SYNC_DIRECTORY => (object) [
+                'value' => Path::makeRelative($drupalFinder->getComposerRoot() . '/config/sync', $drupalRoot),
+                'required' => TRUE,
+            ],
+        ];
+        $settings['config'] = [
+            'content_directory' => (object) [
+                'value' => Path::makeRelative($drupalFinder->getComposerRoot() . '/content/sync', $drupalRoot),
+                'required' => TRUE,
+            ],
+        ];
+        $settings['databases'] = [
+            'default'=>[
+                'default'=>(object)[
+                    'value' => array (
+                        'database' => getenv('MYSQL_DATABASE'),
+                        'username' => getenv('MYSQL_USER'),
+                        'password' => getenv('MYSQL_PASS'),
+                        'prefix' => '',
+                        'host' => getenv('MYSQL_HOST_NAME'),
+                        'port' => getenv('MYSQL_PORT'),
+                        'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+                        'driver' => 'mysql',
+                    ),
+                    'required' => TRUE,
+                ]
+            ],
+        ];
+
       drupal_rewrite_settings($settings, $drupalRoot . '/sites/default/settings.php');
       $fs->chmod($drupalRoot . '/sites/default/settings.php', 0666);
       $event->getIO()->write("Create a sites/default/settings.php file with chmod 0666");
