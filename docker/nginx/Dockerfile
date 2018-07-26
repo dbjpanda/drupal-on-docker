@@ -1,12 +1,13 @@
 FROM nginx:stable-alpine
 
 # Drupal specific enviroment variables
-ENV SITE_NAME=localhost \
+ENV $PROJECT_NAME=test \
+    DOMAIN_NAME=localhost \
     DRUPAL_VERSION=8 \
+    MYSQL_HOSTNAME=mariadb \
     MYSQL_DATABASE=drupal \
     MYSQL_USER=root \
-    MYSQL_PASS=pass \
-    MYSQL_HOST_NAME=mariadb \
+    MYSQL_PASSWORD=pass \
     MYSQL_PORT=3306
 
 COPY nginx.conf /etc/nginx

@@ -21,15 +21,15 @@ services:
     working_dir: /var/www/${PROJECT_NAME}
     environment:
       PROJECT_NAME: ${PROJECT_NAME}
-      DOMAIN_NAME: ${DRUPAL_HOST_NAME}
+      DOMAIN_NAME: ${DOMAIN_NAME}
       DRUPAL_VERSION: ${DRUPAL_VERSION}
+      MYSQL_HOSTNAME: ${MYSQL_HOSTNAME}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASS: ${MYSQL_PASS}
-      MYSQL_HOST_NAME: ${PROJECT_NAME}.mariadb
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_PORT: ${MYSQL_PORT}
     labels:
-      - "traefik.frontend.rule=Host:${DRUPAL_HOST_NAME}"
+      - "traefik.frontend.rule=Host:${DOMAIN_NAME}"
     networks:
       - drupal
 
@@ -40,8 +40,10 @@ services:
 #    volumes:
 #      - ./code/drupal/db-dump/drupal.sql:/docker-entrypoint-initdb.d/dump.sql
     environment:
-       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+       MYSQL_USER: ${MYSQL_USER}
+       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
        MYSQL_DATABASE: ${MYSQL_DATABASE}
+       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}   
     networks:
       - drupal
 

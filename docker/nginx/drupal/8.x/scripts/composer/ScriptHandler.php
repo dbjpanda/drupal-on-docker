@@ -53,24 +53,25 @@ class ScriptHandler {
                 'required' => TRUE,
             ],
         ];
-        $settings['databases'] = [
-            'default'=>[
-                'default'=>(object)[
-                    'value' => array (
-                        'database' => getenv('MYSQL_DATABASE'),
-                        'username' => getenv('MYSQL_USER'),
-                        'password' => getenv('MYSQL_PASS'),
-                        'prefix' => '',
-                        'host' => getenv('MYSQL_HOST_NAME'),
-                        'port' => getenv('MYSQL_PORT'),
-                        'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-                        'driver' => 'mysql',
-                    ),
-                    'required' => TRUE,
-                ]
-            ],
-        ];
-
+      if ($fs->exists(".env")) {
+            $settings['databases'] = [
+                'default' => [
+                    'default' => (object)[
+                        'value' => array(
+                            'database' => getenv('MYSQL_DATABASE'),
+                            'username' => getenv('MYSQL_USER'),
+                            'password' => getenv('MYSQL_PASSWORD'),
+                            'prefix' => '',
+                            'host' => getenv('MYSQL_HOSTNAME'),
+                            'port' => getenv('MYSQL_PORT'),
+                            'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+                            'driver' => 'mysql',
+                        ),
+                        'required' => TRUE,
+                    ]
+                ],
+            ];
+        }
       drupal_rewrite_settings($settings, $drupalRoot . '/sites/default/settings.php');
       $fs->chmod($drupalRoot . '/sites/default/settings.php', 0666);
       $event->getIO()->write("Create a sites/default/settings.php file with chmod 0666");
