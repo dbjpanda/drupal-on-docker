@@ -1,7 +1,7 @@
 FROM nginx:stable-alpine
 
 # Drupal specific enviroment variables
-ENV $PROJECT_NAME=test \
+ENV PROJECT_NAME=test \
     DOMAIN_NAME=localhost \
     DRUPAL_VERSION=8 \
     MYSQL_HOSTNAME=mariadb \
