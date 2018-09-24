@@ -8,7 +8,8 @@ cyn=$'\e[1;36m'
 white=$'\e[0m'
 
 # Check if any chnages has been made inside "docker" directory
-if [ git diff HEAD^ --exit-code --name-only docker ]; then
+if git diff HEAD^ --exit-code --name-only docker
+then
     echo $red No chnages inside docker directory $white
 else
     echo $red Above files have been chnaged inside docker directory. $white
