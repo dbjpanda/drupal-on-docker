@@ -28,10 +28,22 @@ Step 4
 docker exec -it PROJECT_NAME composer install
 ````````
 
-Note: While installing it on production server
----------------------------
-As deployment is less frequent or often done by automated setup so here you can override the default environment variables using below command instead of changing it in .env file.
 
-````````
-SITE_NAME=example.com MYSQL_USER=someone MYSQL_PASS=yoursecrets docker-compose up -d
-``````````````
+Deployment to a live/production server
+---------------------------
+Step 1 
+``````
+./travis/server-setup.sh
+``````
+
+Step 2 (Change travis env variables such as DEPLOY_SERVER, secure etc. according to your requirement and encrypt sensitive variables like below)
+``````
+travis encrypt MASTER_MYSQL_USER=travis MASTER_MYSQL_PASSWORD=travistest MASTER_MYSQL_ROOT_PASSWORD=helloworld MASTER_ADMIN_PASS=pass DEV_MYSQL_USER=travis DEV_MYSQL_PASSWORD=travistest DEV_MYSQL_ROOT_PASSWORD=helloworld DEV_ADMIN_PASS=pass DOCKER_USERNAME=dbjpanda DOCKER_PASSWORD=pass
+``````
+
+Step 3
+``````
+push your changes and you are done.
+``````
+
+

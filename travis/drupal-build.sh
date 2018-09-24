@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 
+docker network create -d bridge traefik-network
+docker run -d --network=traefik-network -p 80:80 -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock --name=traefik traefik:latest --api --docker
+cp .env.example .env
+docker-compose up -d
 docker exec -it test composer install
+docker exec -it test drush si --yes
 
-if curl -L -H Host:test.localhost http://127.0.0.1 | grep -q "Drupal " ; then
-  echo "Drupal has been successfully built up"
-  exit 0
+if [ $(docker exec test drush status bootstrap | grep -c Successful) == 1 ]; then
+   echo $grn Drupal has been sucessfully built and tested. $white
 else
-  echo "Drupal build failed"
-  exit 1
+   echo $red Drupal build failed $white
 fi
+

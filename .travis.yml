@@ -1,14 +1,23 @@
 language: bash
-
 services:
-  - docker
-  
+- docker
+env:
+  global:
+  - DEPLOY_USER=travis
+  - MASTER_SERVER=139.59.89.54
+  - MASTER_DOMAIN=ultraselect.me
+  - DEV_SERVER=139.59.89.54
+  - DEV_DOMAIN=dev.ultraselect.me
+  - secure: "wjRR708IMawBFTtH/xlMKq+F6BhrAxhP+EW4Pt++mLa0/Fs/AyFYwHFT5kFNhb0Pelc1S8SF6m4ZQEFmxRXo1cK6mtYYhEgzvmqcYRY+hGj0/TMu5VrsBpLZfV9UBHH7+Yf1GDc4Z96mTNr+RVDlhtj2g07CEdJwmHASAjpPZm4zfmiWkExiz+SAeTuMiTd7LMdA+Gd3fMa7qdO2UT9PZ9P7T0Nf3jOgCwZGTWycLbvpgwGeNu3hjym1mp+Q8AUlazqJFPNUoVWBlrEnXGSUqoYEGzZQ/V8e7xFDhZhgh6pWHA07QYqoLdKeCYaRcDtfvijHeVIn5afrE0cCgrMor5PqLfAv13h1dqwswAZU/PNdSIheV65f7tKwI/1ZOxJNy3xmAIvxOhsbhEUOUeDbyj9zA6NNnfiPBUN94TaGCiZjdiZvZ+GSIgCLRnlafom7NwDfpqEZPD7ola40xLw7Kv90C8UDK9TOygbgjjjK5Owa25OkYkTzxvc/Cin475D53Yd0jZ9atqlSB9DFY8unGeX2x4ylCOmO6jEB9EfSWNlFEJ8Mravl2NM+mLXxwfzrtGYKxOEWIvsNGfulV+6DozCMVloSH11mzRy2JieK7c0z/i+8zFYHWitk4XNXJJciDXsdprvvzBUI5TXWCDfscjUFhdBIOAFkTCkCTlTTX5E="
+before_install:
+- openssl aes-256-cbc -K $encrypted_7226a3f085d7_key -iv $encrypted_7226a3f085d7_iv
+  -in ./travis/travis_rsa.enc -out travis_rsa -d
 before_script:
-  - ./travis/docker-build.sh
-  - docker network create -d bridge traefik-network
-  - docker run -d --network=traefik-network -p 80:80 -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock --name=traefik traefik:latest --api --docker
-  - cp .env.example .env
-  - docker-compose up -d
-  
+- "./travis/docker-build.sh"
 script:
-  - ./travis/drupal-build.sh
+- "./travis/drupal-build.sh"
+after_success:
+- chmod 600 travis_rsa
+- eval $(ssh-agent)
+- ssh-add travis_rsa
+- "./travis/deploy.sh"
