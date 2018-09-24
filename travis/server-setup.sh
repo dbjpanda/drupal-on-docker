@@ -12,9 +12,9 @@ PRV_KEY=$(cat ${USER}_rsa)
 # Encrypt private key with your CI tool
 travis encrypt-file ${USER}_rsa ./travis/${USER}_rsa.enc --add --force
 
-# Clean generated rsa keys
-rm ${USER}_rsa
-rm ${USER}_rsa.pub
+# Add rsa keys to gitignore
+echo ${USER}_rsa >> .gitignore
+echo ${USER}_rsa.pub >> .gitignore
 
 ssh -t -o StrictHostKeyChecking=no root@"${SERVER}" << EOF
 sudo adduser --disabled-password --gecos "" ${USER}
