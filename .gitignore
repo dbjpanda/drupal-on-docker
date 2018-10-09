@@ -4,5 +4,3 @@
 
 # Ignore .env files as they are personal
 .env
-travis_rsa
-travis_rsa.pub
