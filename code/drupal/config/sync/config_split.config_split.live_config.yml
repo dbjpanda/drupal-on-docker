@@ -1,0 +1,17 @@
+uuid: 1cc4a470-f7a7-4122-9835-01be31510f6a
+langcode: en
+status: true
+dependencies: {  }
+id: live_config
+label: 'Live configuration'
+description: ''
+folder: ../config/live_config
+module: {  }
+theme: {  }
+blacklist:
+  - shortcut.set.default
+  - system.site
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 0

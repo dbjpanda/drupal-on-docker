@@ -1,0 +1,5 @@
+config_suite:
+  automatic_import: true
+  automatic_export: true
+_core:
+  default_config_hash: UqP-UdwMDBQBbxLYDJDUtXcTalwW83Pf3hSFXgNLFIc
