@@ -36,9 +36,9 @@ Step 1
 ./travis/server-setup.sh
 ``````
 
-Step 2 (Change travis env variables such as DEPLOY_SERVER, SECURE  etc. as per your requirement. If you want to encrypt any sensitive variables execute below commands)
+Step 2 (Change travis env variables such as DEPLOY_SERVER, secure etc. according to your requirement and encrypt sensitive variables like below)
 ``````
-travis encrypt MASTER_MYSQL_USER=travis MASTER_MYSQL_PASSWORD=travistest MASTER_MYSQL_ROOT_PASSWORD=helloworld MASTER_ADMIN_PASS=pass DEV_MYSQL_USER=travis DEV_MYSQL_PASSWORD=travistest DEV_MYSQL_ROOT_PASSWORD=helloworld DEV_ADMIN_PASS=pass DOCKER_USERNAME=dbjpanda DOCKER_PASSWORD=pass
+travis encrypt MYSQL_USER=travis MYSQL_PASSWORD=travistest MYSQL_ROOT_PASSWORD=helloworld ADMIN_PASS=pass DOCKER_USERNAME=dbjpanda DOCKER_PASSWORD=pass
 ``````
 
 Step 3
